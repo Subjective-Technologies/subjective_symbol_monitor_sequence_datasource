@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" role="img" aria-label="Golden Thinker Trading logo">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF2BE"/>
+      <stop offset="40%" stop-color="#F6CD59"/>
+      <stop offset="75%" stop-color="#D79B22"/>
+      <stop offset="100%" stop-color="#8A5407"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FFD86A" stop-opacity="0.50"/>
+      <stop offset="60%" stop-color="#B67A12" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.9" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <clipPath id="clipInner">
+      <circle cx="32" cy="30.5" r="21.5"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" fill="#000"/>
+
+  <!-- Outer medallion -->
+  <circle cx="32" cy="32" r="30" fill="#05070B"/>
+  <circle cx="32" cy="32" r="28.6" fill="url(#gold)"/>
+  <circle cx="32" cy="32" r="23.7" fill="#070A0F"/>
+  <circle cx="32" cy="32" r="22.6" fill="#0B0F14"/>
+  <circle cx="32" cy="32" r="22.6" fill="url(#glow)"/>
+
+  <!-- Inner rim -->
+  <circle cx="32" cy="32" r="23.7" fill="none" stroke="#FFD86A" stroke-opacity="0.45" stroke-width="0.9"/>
+  <circle cx="32" cy="32" r="22.2" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="0.8"/>
+
+  <!-- Top circle content -->
+  <g clip-path="url(#clipInner)">
+    <!-- Candlesticks (subtle) -->
+    <g opacity="0.50">
+      <g stroke="#FFD86A" stroke-width="1.2" stroke-linecap="round">
+        <line x1="14" y1="22" x2="14" y2="34"/>
+        <line x1="18" y1="20" x2="18" y2="35"/>
+        <line x1="22" y1="24" x2="22" y2="36"/>
+        <line x1="46" y1="21" x2="46" y2="36"/>
+        <line x1="50" y1="19" x2="50" y2="34"/>
+        <line x1="54" y1="23" x2="54" y2="37"/>
+      </g>
+      <g fill="#F6CD59" opacity="0.80">
+        <rect x="13.1" y="27" width="1.8" height="3.8" rx="0.5"/>
+        <rect x="17.1" y="25.5" width="1.8" height="5.2" rx="0.5"/>
+        <rect x="21.1" y="29" width="1.8" height="3.2" rx="0.5"/>
+        <rect x="45.1" y="26" width="1.8" height="6.2" rx="0.5"/>
+        <rect x="49.1" y="24.5" width="1.8" height="4.8" rx="0.5"/>
+        <rect x="53.1" y="28" width="1.8" height="4.5" rx="0.5"/>
+      </g>
+    </g>
+
+    <!-- Uptrend arc -->
+    <path d="M12 36 C18 33, 24 31, 30 28 S44 21.5, 52.5 18"
+          fill="none" stroke="#FFD86A" stroke-width="2.1" stroke-linecap="round" opacity="0.70"/>
+    <path d="M52.5 18 L50.4 18.6 L51.2 16.7 Z" fill="#FFD86A" opacity="0.95"/>
+
+    <!-- Thinker-like silhouette (stylized/original) -->
+    <g filter="url(#softGlow)">
+      <!-- Rock -->
+      <path d="M18.2 40.5
+               c2.4-1.2 6.2-1.6 9.6-0.9
+               c2.8 0.6 4.8 1.5 6.4 2.8
+               c1.2 1.0 2.4 1.6 3.8 1.9
+               c1.4 0.3 3.8 0.2 6.4-0.4
+               c1.6-0.4 2.6 0.4 2.5 2.0
+               c-0.2 2.1-1.6 3.6-4.0 4.3
+               c-4.9 1.4-11.7 1.5-17.6 0.2
+               c-3.8-0.8-6.2-2.4-7.2-4.8
+               c-0.6-1.4 0.0-2.5 1.7-3.1z"
+            fill="url(#gold)" opacity="0.95"/>
+
+      <!-- Body -->
+      <path d="M33.8 16.8
+               c2.4 0.0 4.6 1.7 4.9 4.2
+               c0.3 2.4-1.1 4.7-3.5 5.4
+               c-1.6 0.5-3.5 0.1-4.7-1.0
+               c-1.4-1.2-1.9-3.1-1.4-4.9
+               c0.6-2.2 2.6-3.7 4.7-3.7z
+
+               M28.3 26.7
+               c1.6 1.4 3.5 2.0 5.7 1.8
+               c2.5-0.2 4.3-1.4 5.6-3.3
+               c1.7 1.2 2.6 2.6 2.8 4.2
+               c0.2 1.7-0.3 3.4-1.5 5.1
+               c-0.8 1.1-1.5 2.0-2.0 2.7
+               c-0.6 0.8-0.8 1.6-0.7 2.5
+               c0.2 1.6 0.1 2.9-0.5 4.0
+               c-0.8 1.6-2.2 2.6-4.2 3.1
+               c-2.8 0.7-5.4 0.3-7.4-1.2
+               c-2.0-1.5-3.1-3.6-3.3-6.3
+               c-0.2-3.1 1.2-5.8 3.4-8.0
+               c0.6-0.6 1.3-1.1 2.1-1.6z"
+            fill="#FFD86A" opacity="0.95"/>
+
+      <!-- Arm/hand -->
+      <path d="M40.5 26.3
+               c-1.4 1.4-2.6 2.7-3.3 3.9
+               c-0.6 1.0-1.0 2.2-1.2 3.5
+               c-0.2 1.4-0.7 2.4-1.4 3.1
+               c-0.7 0.7-1.8 1.0-3.1 0.8
+               c0.2-1.2 0.5-2.3 0.9-3.2
+               c0.6-1.5 1.5-2.9 2.8-4.2
+               c1.3-1.3 2.7-2.6 4.1-3.9z"
+            fill="#F6CD59" opacity="0.95"/>
+    </g>
+  </g>
+
+  <!-- Banner -->
+  <g transform="translate(0 38)">
+    <path d="M10 10
+             c2.5-2.2 6.5-3.2 12.2-3.2
+             h19.6
+             c5.7 0 9.7 1.0 12.2 3.2
+             c0.6 0.5 0.8 1.2 0.5 1.9
+             c-0.7 1.9-2.2 3.3-4.6 4.2
+             c-4.3 1.6-10.7 2.5-18.0 2.5
+             c-7.3 0-13.7-0.9-18.0-2.5
+             c-2.4-0.9-3.9-2.3-4.6-4.2
+             c-0.3-0.7-0.1-1.4 0.5-1.9z"
+          fill="url(#gold)" opacity="0.95"/>
+
+    <!-- TEXT: Golden Thinker in yellow -->
+    <text x="32" y="16.2" text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="6.2" letter-spacing="1.2"
+          fill="#FFD86A" filter="url(#softGlow)">
+      GOLDEN THINKER
+    </text>
+
+    <text x="32" y="22.3" text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="3.4" letter-spacing="2.6"
+          fill="#FFD86A" opacity="0.95">
+      TRADING
+    </text>
+  </g>
+
+  <!-- Outer sheen -->
+  <circle cx="32" cy="32" r="28.6" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="1"/>
+</svg>
