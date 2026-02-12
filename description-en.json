@@ -1,4 +1,5 @@
 {
+  "description": "Retrieves recent per-symbol market documents from Mongo within a time window to support sequence detection and analytics pipelines.",
   "domainCategory": "Trading",
   "subjectiveTechnologyElement": "Pipelines",
   "publisher": "BrainBoost Ltd.",
@@ -9,7 +10,7 @@
     {
       "type": "splitList",
       "title": "Symbol Monitor Sequence",
-      "text": "Subjective datasource implementation for SubjectiveSymbolMonitorSequenceDataSource.",
+      "text": "Retrieves recent per-symbol market documents from Mongo within a time window to support sequence detection and analytics pipelines.",
       "image": {
         "src": "/subjective_symbol_monitor_sequence_datasource/icon.svg",
         "alt": "Symbol Monitor Sequence icon"
