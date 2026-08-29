@@ -1,17 +1,3 @@
-# SubjectiveSymbolMonitorSequenceDataSource
+# subjective_symbol_monitor_sequence_datasource
 
-Subjective datasource implementation for SubjectiveSymbolMonitorSequenceDataSource.
-
-## Usage
-
-```python
-from subjective_datasources.SubjectiveSymbolMonitorSequenceDataSource import SubjectiveSymbolMonitorSequenceDataSource
-
-source = SubjectiveSymbolMonitorSequenceDataSource(params={})
-source.fetch()
-```
-
-## Parameters
-
-Use the params dictionary when constructing the datasource to provide connection and runtime values.
-Refer to get_connection_data() for required fields.
+Subjective v2 datasource for Binance-only trading pipelines. See repository README for configuration and safety constraints.

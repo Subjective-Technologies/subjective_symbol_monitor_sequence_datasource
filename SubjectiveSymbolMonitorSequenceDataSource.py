@@ -1,66 +1,56 @@
-import time
-from subjective_abstract_data_source_package.SubjectiveDataSource import SubjectiveDataSource
-from brainboost_data_source_logger_package.BBLogger import BBLogger
+import sys
+from collections import defaultdict, deque
+from decimal import Decimal, InvalidOperation
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from subjective_abstract_data_source_package import SubjectiveDataSource
+
+from trading_contracts.plugin_support import icon_for
 
 
 class SubjectiveSymbolMonitorSequenceDataSource(SubjectiveDataSource):
-    connection_type = "SequenceDetector"
-    connection_fields = ["symbol", "interval", "pattern", "minutes"]
-    icon_svg = "<svg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='12' r='9' fill='#2d6a4f'/><path d='M7 12h10' stroke='#ffffff' stroke-width='2'/></svg>"
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.window = max(1, int(self._connection.get("window", 20)))
+        self._windows = defaultdict(lambda: deque(maxlen=self.window))
 
-    def get_icon(self):
-        return self.icon_svg
+    @classmethod
+    def connection_schema(cls):
+        return {"window": {"type": "int", "label": "SMA Window", "default": 20, "min": 1}}
 
-    def get_connection_data(self):
-        return {"connection_type": self.connection_type, "fields": list(self.connection_fields)}
+    @classmethod
+    def request_schema(cls):
+        return {"event": {"type": "object", "label": "Market Event"}, "events": {"type": "array", "label": "Market Events"}}
 
-    def _get_param(self, key, default=None):
-        return self.params.get(key, default)
+    @classmethod
+    def output_schema(cls):
+        return {"symbol": {"type": "text", "label": "Symbol"}, "market": {"type": "object", "label": "Latest Market Event"}, "sequence": {"type": "array", "label": "Price Window"}, "sma": {"type": "text", "label": "SMA"}, "ready": {"type": "bool", "label": "Window Ready"}, "error": {"type": "text", "label": "Error"}}
 
-    def _emit_result(self, result):
-        if result is None:
-            self.set_total_items(0)
-            self.set_processed_items(0)
-            return
-        if isinstance(result, (list, tuple)):
-            self.set_total_items(len(result))
-            self.set_processed_items(0)
-            for item in result:
-                self.update(item)
-                self.increment_processed_items()
-            return
-        self.set_total_items(1)
-        self.set_processed_items(0)
-        self.update(result)
-        self.increment_processed_items()
+    @classmethod
+    def icon(cls):
+        return icon_for(__file__)
 
-    def fetch(self):
-        start = time.perf_counter()
-        if self.status_callback:
-            self.status_callback(self.get_name(), "fetch_started")
-        from com_goldenthinker_trade_database.MongoConnector import MongoConnector
-        from com_goldenthinker_trade_exchange.ExchangeConfiguration import ExchangeConfiguration
-        from com_goldenthinker_trade_model.Symbol import Symbol
-
-        symbol_value = self._get_param("symbol")
-        if not symbol_value:
-            raise ValueError("symbol is required for sequence data")
-        minutes = int(self._get_param("minutes", 60))
-        symbol = Symbol(symbol_value)
-        exchange_name = ExchangeConfiguration.get_default_exchange_name()
-        collection_name = f"{exchange_name}_{symbol.uppercase_format()}"
-        data = MongoConnector.get_instance().get_latest_docs_within_last_minutes_for_symbol(
-            exchange=exchange_name,
-            symbol=symbol.uppercase_format(),
-            minutes=minutes,
-            collection_name=collection_name,
-        )
-        self._emit_result({"symbol": symbol.uppercase_format(), "minutes": minutes, "data": data})
-        duration = time.perf_counter() - start
-        self.set_total_processing_time(duration)
-        self.set_fetch_completed(True)
-        if self.progress_callback:
-            self.progress_callback(self.get_name(), self.get_total_to_process(), self.get_total_processed(), self.estimated_remaining_time())
-        if self.status_callback:
-            self.status_callback(self.get_name(), "fetch_completed")
-        BBLogger.log(f"Fetch completed for {self.get_name()}")
+    def run(self, request):
+        request = request or {}
+        events = request.get("events") or ([request["event"]] if request.get("event") else [])
+        latest = None
+        try:
+            for event in events:
+                event = event.get("event", event) if isinstance(event, dict) else event
+                symbol = str(event.get("symbol", "")).upper()
+                value = str(event.get("last", event.get("close", "")))
+                if not symbol or not value:
+                    continue
+                Decimal(value)
+                self._windows[symbol].append(value)
+                latest = event
+            if not latest:
+                return {"symbol": "", "market": None, "sequence": [], "sma": "", "ready": False, "error": "market event required"}
+            values = self._windows[str(latest["symbol"]).upper()]
+            ready = len(values) >= self.window
+            sma = format(sum(Decimal(value) for value in values) / len(values), "f") if ready else ""
+            return {"symbol": str(latest["symbol"]).upper(), "market": latest, "sequence": list(values), "sma": sma, "ready": ready, "error": ""}
+        except (InvalidOperation, TypeError, ValueError) as exc:
+            return {"symbol": "", "market": latest, "sequence": [], "sma": "", "ready": False, "error": str(exc)}
